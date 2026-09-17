@@ -1,11 +1,15 @@
-## Skenario Proyek - Kelompok 13
+# Skenario Proyek - Kelompok 13
 
-Proyek ini mensimulasikan skenario keamanan siber pada perangkat bertipe IoT dalam lingkungan lab yang terisolasi. Topologi terdiri dari Attacker Node yang terhubung ke Router, Router terhubung ke Switch lewat trunk, dan Switch menghubungkan Target Server serta Monitoring Node.
+Proyek ini mensimulasikan skenario keamanan siber pada perangkat IoT dalam lingkungan lab yang terisolasi.
 
-- VLAN 10, Attacker Node (`192.168.13.0/27`), Kali Linux, digunakan untuk simulasi pengujian celah keamanan terhadap Target Server.
-- VLAN 20, Target Server (`192.168.13.32/27`), Ubuntu Server, merepresentasikan perangkat IoT dan menjadi objek analisis Red Team.
-- VLAN 30, Monitoring Node (`192.168.13.64/27`), Security Onion, menerima mirrored traffic dari port VLAN 20 pada switch.
+Topologi terdiri dari:
+- Attacker Node (`192.168.13.2/27`) - Kali Linux
+- Target Server (`192.168.13.34/27`) - Ubuntu Server
+- Monitoring Node (`192.168.13.66/27`) - Security Onion
+- Router sebagai penghubung antarsegmen jaringan.
 
-Router melakukan inter-VLAN routing sehingga trafik dari Attacker menuju Target selalu melewati router sebelum masuk ke switch.
+Setiap node terhubung langsung ke Router dan berada pada subnet yang berbeda. Router digunakan untuk melakukan routing antarsegmen.
 
-Dokumentasi desain lengkap tersedia di [`docs/design/topology.png`](./docs/design/topology.png) dan [`docs/design/ip_plan.md`](./docs/design/ip_plan.md).
+Path dokumentasi:
+- [`docs/design/topology.png`](./docs/design/topology.png)
+- [`docs/design/ip_plan.md`](./docs/design/ip_plan.md)
