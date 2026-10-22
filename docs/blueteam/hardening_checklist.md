@@ -1,13 +1,13 @@
 # Hardening Checklist - Target Server (192.168.13.34)
 
-| ID  | Kategori        | Kontrol Hardening                        | Target Layanan / File      | Status   | Link Bukti (Evidence) |
-| --- | --------------- | ---------------------------------------- | -------------------------- | -------- | --------------------- |
-| A1  | Access & Auth   | Nonaktifkan Login Root Langsung          | `/etc/ssh/sshd_config`     | Progress |                       |
-| A2  | Access & Auth   | Ganti Port Default SSH (22 -> 2222)      | `/etc/ssh/sshd_config`     | Progress |                       |
-| A3  | Access & Auth   | Implementasi Fail2ban (Anti Brute-Force) | `/etc/fail2ban/jail.local` | Progress |                       |
-| B1  | Service Surface | Host Firewall (UFW) Whitelist Port       | UFW (Allow 2222 & 3000)    | Progress |                       |
-| B2  | Service Surface | Binding Localhost MongoDB (127.0.0.1)    | `/etc/mongod.conf`         | Progress |                       |
-| B3  | Service Surface | Patch Paket & Minimalisasi Service       | Sistem Operasi Ubuntu      | Progress |                       |
-| C1  | Data & App      | Pemisahan Kredensial DB ke File `.env`   | `.env` Backend Express     | Progress |                       |
-| C2  | Data & App      | Audit Logging Request Masuk              | Middleware Express.js      | Progress |                       |
-| C3  | Data & App      | Validasi Input & Rate Limiter API        | Endpoint `/api/telemetry`  | Progress |                       |
+| ID  | Kategori        | Kontrol Hardening                        | Target Layanan / File      | Status   | Link Bukti (Evidence)                                                                                                                       |
+| --- | --------------- | ---------------------------------------- | -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| A1  | Access & Auth   | Nonaktifkan Login Root Langsung          | `/etc/ssh/sshd_config`     | Selesai  | [A1_ssh_root_login_before](evidence/A1_ssh_root_login_before.png) <br> [A1_ssh_root_login_after](evidence/A1_ssh_root_login_after.png)      |
+| A2  | Access & Auth   | Ganti Port Default SSH (22 -> 2222)      | `/etc/ssh/sshd_config`     | Selesai  | [A2_ssh_port_before](evidence/A2_ssh_port_before.png) <br> [A2_ssh_port_after](evidence/A2_ssh_port_after.png)                              |
+| A3  | Access & Auth   | Implementasi Fail2ban (Anti Brute-Force) | `/etc/fail2ban/jail.local` | Selesai  | [A3_fail2ban](evidence/A3_fail2ban.png)                                                                                                     |
+| B1  | Service Surface | Host Firewall (UFW) Whitelist Port       | UFW (Allow 2222 & 3000)    | Selesai  | [B1_ufw_before](evidence/B1_ufw_before.png) <br> [B1_ufw_after](evidence/B1_ufw_after.png) <br> [B1_nmap_after](evidence/B1_nmap_after.png) |
+| B2  | Service Surface | Binding Localhost MongoDB (127.0.0.1)    | `/etc/mongod.conf`         | Selesai  | [B2_binding_localhost](evidence/B2_binding_localhost.png)                                                                                   |
+| B3  | Service Surface | Disable Services/Ports tidak terpakai    | Sistem Operasi Ubuntu      | Selesai  | [B3_disable_unused_service_port](evidence/B3_disable_unused_service_port.png)                                                               |
+| C1  | Data & App      | Pemisahan Kredensial DB ke File `.env`   | `.env` Backend Express     | Selesai  | [C1_env_isolation](evidence/C1_env_isolation.png) <br> [C1_snippet_code](evidence/C1_snippet_code.png)                                      |
+| C2  | Data & App      | Audit Logging Request Masuk              | Middleware Express.js      | Selesai  | [C2_morgan_logging.png](evidence/C2_morgan_logging.png)                                                                                     |
+| C3  | Data & App      | Validasi Input API                       | Endpoint `/api/telemetry`  | Progress |                                                                                                                                             |
