@@ -29,7 +29,7 @@ Praktikum ini mensimulasikan pengujian penetrasi keamanan (Red Team) terhadap in
   - Port standar SSH (22) dan port database MongoDB (27017) terdeteksi filtered / tertutup dari luar.
   - Layanan aktif publik yang terbuka dan merespons adalah Port 2222/tcp (OpenSSH) dan Port 3000/tcp (Node.js Express API).
   - Status SCN-01 dinyatakan SUKSES.
-  - evidence : evidence/scn1.png
+  - evidence : [evidence/scn1.png](evidence/scn1.png)
 
 # 3. SKENARIO 2 (SCN-02): SSH CREDENTIAL BRUTE-FORCE & LOCKOUT ASSESSMENT
 
@@ -46,8 +46,7 @@ hydra -l kel13 -P pass.txt ssh://192.168.13.34:2222</code></pre></th></tr></thea
 - **Hasil Temuan:**
   - Hydra berhasil menemukan kredensial yang valid.
   - Valid Credential Found: login: kel13 | password: kelompok13.
-  - Status SCN-02 dinyatakan SUKSES.
-  - evidence : evidence/scn2.png
+  - Status SCN-[evidence/scn2.png](evidence/scn2.png)
 
 # 4. SKENARIO 3 (SCN-03): UNAUTHENTICATED SENSOR SPOOFING & TELEMETRY INJECTION
 
@@ -68,7 +67,7 @@ curl -X POST <http://192.168.13.34:3000/api/telemetry/volume> \\
   - Server merespons dengan status sukses (200 OK / success).
   - Data telemetri palsu berhasil masuk dan tercatat permanen di database MongoDB (db.log_sistems.find().pretty()).
   - Status SCN-03 dinyatakan SUKSES.
-  - evidence : evidence/scn3.png
+  - evidence : [evidence/scn3.png](evidence/scn3.png)
 
 # 5. KESIMPULAN & REKOMENDASI MITIGASI
 
