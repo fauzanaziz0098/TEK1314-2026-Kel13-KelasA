@@ -31,7 +31,7 @@ Baris tidak boleh dihapus. Kegagalan deteksi tetap dicatat sebagai temuan. Bukti
 
 ### SCN-02: SSH Credential Brute-Force & Lockout Assessment (`Hydra`)
 - **1. Serang:** Menjalankan `hydra -L ~/users.txt -P ~/passwords.txt -s 2222 ssh://192.168.13.34 -t 4 -V` ke layanan OpenSSH port `2222`.
-- **2. Deteksi:** Percobaan login gagal berulang tercatat di `/var/log/auth.log` dan terpantau pada monitoring jaringan; IP `192.168.13.2` terkena blokir otomatis Fail2ban (`sudo fail2ban-client status sshd`).
+- **2. Deteksi:** Percobaan koneksi SSH ke port `2222` dari `192.168.13.2` terpantau di Wireshark Security Onion (`ip.addr == 192.168.13.34 && (tcp.port == 2222 || tcp.port == 3000)`) — bukti: [Deteksi.png](blueteam/evidence/Deteksi.png). Percobaan login gagal berulang juga tercatat di `/var/log/auth.log` dan IP `192.168.13.2` terkena blokir otomatis Fail2ban (`sudo fail2ban-client status sshd`).
 - **3. Analisis:** Autentikasi password SSH masih aktif sebelum migrasi penuh ke SSH key, namun Fail2ban berhasil membatasi upaya brute-force.
 - **4. Respons:** Memastikan jail `sshd` Fail2ban aktif di port `2222` (`unbanip 192.168.13.2` dilakukan sementara setelah verifikasi blokir agar pengujian skenario berikutnya berjalan lancar).
 - **5. Verifikasi:** IP penyerang terblokir otomatis oleh Fail2ban saat percobaan brute-force berulang.

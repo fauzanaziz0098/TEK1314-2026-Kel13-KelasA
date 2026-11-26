@@ -21,9 +21,9 @@ Dokumen ini memuat rencana pengujian penetrasi beserta hasil eksekusi aktual ole
 
 | ID Skenario | Kategori Serangan | Layanan / Endpoint Target | Tools yang Digunakan | Status | Evidence |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **SCN-01** | Reconnaissance | Seluruh port Target (`192.168.13.34`) | `nmap` | **SUKSES** | `evidence/scn1.png` |
-| **SCN-02** | Exploitation / Akses | Service SSH (`Port 2222/tcp`) | `Hydra` | **SUKSES** (Tercatat & diblokir Fail2ban) | `evidence/scn2.png` |
-| **SCN-03** | Web / API / Protokol IoT | Endpoint Telemetri (`POST /api/telemetry/volume`) | `Burp Suite` | **SUKSES** (Sebelum hardening) / **DITOLAK 401** (Sesudah hardening) | `evidence/scn3.png` |
+| **SCN-01** | Reconnaissance | Seluruh port Target (`192.168.13.34`) | `nmap` | **SUKSES** | `evidence/scn1_Reconnaissance.png` |
+| **SCN-02** | Exploitation / Akses | Service SSH (`Port 2222/tcp`) | `Hydra` | **GAGAL / DIBLOKIR** (Ditolak Fail2ban) | `evidence/scn2_BruteForce.png` |
+| **SCN-03** | Web / API / Protokol IoT | Endpoint Telemetri (`POST /api/telemetry/volume`) | `Burp Suite` | **SUKSES** (Sebelum hardening) / **DITOLAK 401** (Sesudah hardening) | `evidence/scn3_BurpSuite_Before.png`, `evidence/scn3_BurpSuite_After.png` |
 
 ---
 
@@ -47,7 +47,7 @@ Dokumen ini memuat rencana pengujian penetrasi beserta hasil eksekusi aktual ole
 * **Hasil Temuan Aktual:**
   * Port standar SSH (`22/tcp`) dan port database MongoDB (`27017/tcp`) terdeteksi `filtered` / tertutup dari akses luar.
   * Layanan aktif publik yang terbuka dan merespons adalah **Port `2222/tcp` (OpenSSH)** dan **Port `3000/tcp` (Node.js Express API)**.
-  * Status **SCN-01** dinyatakan **SUKSES** (`evidence/scn1.png`).
+  * Status **SCN-01** dinyatakan **SUKSES** (`evidence/scn1_Reconnaissance.png`).
 
 ---
 
@@ -70,8 +70,8 @@ Dokumen ini memuat rencana pengujian penetrasi beserta hasil eksekusi aktual ole
   * Upaya koneksi Hydra terputus secara sepihak (*Connection refused / timed out*).
   * Alamat IP penyerang (`192.168.13.2`) tercatat masuk daftar pemblokiran sementara (*jail*) oleh Fail2ban di sisi Target Server.
 * **Hasil Temuan Aktual:**
-  * Pada pengujian kredensial wordlist, Hydra berhasil menemukan kredensial valid (`login: kel13 | password: kelompok13`), sedangkan pada percobaan *brute-force* berulang daemon Fail2ban (`sshd` jail) aktif memblokir IP `192.168.13.2`.
-  * Status **SCN-02** dinyatakan **SUKSES** (`evidence/scn2.png`).
+  * Pada percobaan *brute-force* dengan Hydra (`hydra -L users.txt -P passwords.txt -s 2222 ssh://192.168.13.34 -t 4 -V -I`), tidak ada kredensial valid yang berhasil ditemukan (`0 valid password found`) karena daemon Fail2ban (`sshd` jail) aktif memblokir IP penyerang `192.168.13.2`, sehingga koneksi berikutnya ditolak (`Connection refused`).
+  * Status serangan **SCN-02** dinyatakan **GAGAL / DIBLOKIR** (kontrol Fail2ban bekerja sesuai ekspektasi, lihat `evidence/scn2_BruteForce.png`).
 
 ---
 
@@ -101,7 +101,7 @@ Dokumen ini memuat rencana pengujian penetrasi beserta hasil eksekusi aktual ole
 * **Hasil Temuan Aktual:**
   * **Baseline (Sebelum Hardening):** Server merespons dengan status **`HTTP/1.1 201 Created`** (`"status": "success"`), dan data telemetri palsu berhasil masuk serta tercatat permanen di database MongoDB (`db.log_sistems.find().pretty()`).
   * **Verifikasi Ulang (Sesudah Hardening):** Setelah Blue Team menerapkan `server.js.hardened` (validasi header `x-api-key`), percobaan pengiriman ulang payload yang sama lewat Burp Suite Repeater ditolak dengan status **`HTTP/1.1 401 Unauthorized`** dan tidak ada data palsu baru yang masuk ke database.
-  * Status **SCN-03** dinyatakan **SUKSES** (`evidence/scn3.png`).
+  * Status **SCN-03** dinyatakan **SUKSES** (`evidence/scn3_BurpSuite_Before.png`, `evidence/scn3_BurpSuite_After.png`).
 
 ---
 
@@ -109,7 +109,7 @@ Dokumen ini memuat rencana pengujian penetrasi beserta hasil eksekusi aktual ole
 
 Berdasarkan hasil pengujian penetrasi pada **SCN-01**, **SCN-02**, dan **SCN-03**, ditemukan beberapa celah keamanan signifikan pada arsitektur lingkungan target IoT:
 * Pengujian *reconnaissance* (**SCN-01**) menunjukkan bahwa layanan publik teridentifikasi terbuka pada Port `2222/tcp` (OpenSSH) dan Port `3000/tcp` (Node.js Express API), sementara port standar SSH (`22`) dan MongoDB (`27017`) berhasil difilter dari akses eksternal.
-* Pengujian kredensial SSH (**SCN-02**) menunjukkan risiko kelemahan kebijakan kata sandi akun `kel13` jika tidak dibarengi mekanisme pembatasan percobaan login (`Fail2ban`) dan migrasi ke autentikasi berbasis kunci publik (SSH Key).
+* Pengujian *brute-force* SSH (**SCN-02**) gagal menembus sistem karena mekanisme pembatasan percobaan login (**Fail2ban**) aktif memblokir IP penyerang (`Connection refused`), namun migrasi ke autentikasi berbasis kunci publik (SSH Key) tetap disarankan untuk memperkuat pertahanan.
 * Pengujian *telemetry injection* (**SCN-03**) via Burp Suite membuktikan bahwa endpoint HTTP POST (`/api/telemetry/volume`) awalnya menerima data sensor palsu (`201 Created`) tanpa autentikasi perangkat, sehingga memanipulasi koleksi `log_sistems` di MongoDB.
 
 **Rekomendasi Mitigasi:**
