@@ -1,19 +1,6 @@
 # TEK1314-2026-Kel13-KelasA — Pengujian & Pengamanan Server IoT KIRA (Smart Chicken Feeder)
 
-Repositori resmi **Kelompok 13 (Kelas A)** untuk Proyek Akhir (PBL) Mata Kuliah **TEK1314 — Keamanan Siber**, Program Studi Teknologi Rekayasa Komputer, Sekolah Vokasi, IPB University.
-
-## Anggota & Peran
-
-| Nama                   | NIM         | Peran        |
-| :--------------------- | :---------- | :----------- |
-| Naila Darussalamah     | J0404241059 | Lead Analyst |
-| Luthfi Kurnia Siahaan  | J0404241150 | Red Team     |
-| Fauzan Aziz            | J0404241129 | Blue Team    |
-| Ismail Daffa Antariksa | J0404241176 | Blue Team    |
-
-# TEK1314-2026-Kel13-KelasA — Pengujian & Pengamanan Server IoT KIRA (Smart Chicken Feeder)
-
-Repositori resmi **Kelompok 13 (Kelas A)** untuk Proyek Akhir (PBL) Mata Kuliah **TEK1314 — Keamanan Siber**, Program Studi Teknologi Rekayasa Komputer, Sekolah Vokasi, IPB University.
+Repositori  **Kelompok 13 (Kelas A)** untuk Proyek Akhir (PBL) Mata Kuliah **TEK1314 — Keamanan Siber**, Program Studi Teknologi Rekayasa Komputer, Sekolah Vokasi, IPB University.
 
 ---
 
